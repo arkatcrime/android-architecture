@@ -4,13 +4,14 @@ import androidx.lifecycle.LiveData
 import com.example.android.architecture.blueprints.todoapp.data.Result
 import com.example.android.architecture.blueprints.todoapp.data.Task
 
-class FakeDataSource : TasksDataSource{
+class FakeDataSource(var tasks:MutableList<Task>? = mutableListOf()) : TasksDataSource{
     override fun observeTasks(): LiveData<Result<List<Task>>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override suspend fun getTasks(): Result<List<Task>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        tasks?.let { return Result.Success(ArrayList(it)) }
+        return Result.Error(Exception("Tasks not found"))
     }
 
     override suspend fun refreshTasks() {
@@ -30,7 +31,7 @@ class FakeDataSource : TasksDataSource{
     }
 
     override suspend fun saveTask(task: Task) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        tasks?.add(task)
     }
 
     override suspend fun completeTask(task: Task) {
@@ -54,7 +55,7 @@ class FakeDataSource : TasksDataSource{
     }
 
     override suspend fun deleteAllTasks() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        tasks?.clear()
     }
 
     override suspend fun deleteTask(taskId: String) {
