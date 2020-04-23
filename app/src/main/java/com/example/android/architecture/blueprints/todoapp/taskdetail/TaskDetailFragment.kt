@@ -28,6 +28,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.android.architecture.blueprints.todoapp.EventObserver
 import com.example.android.architecture.blueprints.todoapp.R
+import com.example.android.architecture.blueprints.todoapp.data.source.DefaultTasksRepository
 import com.example.android.architecture.blueprints.todoapp.databinding.TaskdetailFragBinding
 import com.example.android.architecture.blueprints.todoapp.tasks.DELETE_RESULT_OK
 import com.example.android.architecture.blueprints.todoapp.util.setupRefreshLayout
@@ -40,9 +41,11 @@ import com.google.android.material.snackbar.Snackbar
 class TaskDetailFragment : Fragment() {
     private lateinit var viewDataBinding: TaskdetailFragBinding
 
-    private val args: TaskDetailFragmentArgs by navArgs()
+    private val viewModel by viewModels<TaskDetailViewModel>{
+        TaskDetailViewModelFactory(DefaultTasksRepository.getRepository(requireActivity().application))
+    }
 
-    private val viewModel by viewModels<TaskDetailViewModel>()
+    private val args: TaskDetailFragmentArgs by navArgs()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
